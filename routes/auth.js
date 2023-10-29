@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Client = require('../model/Client');
-const WaitList = require('../model/WaitList');
+const WaitList = require('../model/Waitlist');
 
 
 router.post('/waitlist', async (req, res) => {
