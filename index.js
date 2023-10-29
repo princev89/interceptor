@@ -144,7 +144,9 @@ app.use('/api/client', authRoute)
 
 app.get('/', (req, res) => {
     res.send(`
-    <body data-new-gr-c-s-check-loaded="14.1085.0" data-gr-ext-installed="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <body>
     <header>
       <div class="logo">
        <h1>Interceptor</h1>
