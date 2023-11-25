@@ -9,7 +9,7 @@ const WaitList = require('../model/Waitlist');
 router.post('/waitlist', async (req, res) => {
     const emailExists = await WaitList.findOne({ email: req.body.email });
     if (emailExists) return res.json({
-        'message' : '👋 Hello! It seems your email is already registered with us.'
+        'message': '👋 Hello! It seems your email is already registered with us.'
     });
 
 
@@ -30,7 +30,10 @@ router.post('/waitlist', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     const emailExists = await Client.findOne({ email: req.body.email });
-    if (emailExists) return res.status(400).send('Email already exists');
+    if (emailExists) return res.status(400).json({
+        'status': 0,
+        'err': 'email already exists',
+    });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -46,7 +49,10 @@ router.post('/register', async (req, res) => {
         res.send(savedClient);
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({
+            'status': 0,
+            'err': err,
+        });
     }
 
 });
@@ -62,8 +68,11 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({ _id: client._id }, process.env.TOKEN_SECRET);
     // res.header('auth-token', token).send(token);
-    return res.send(token);
+    return res.json({
+        status: 1,
+        'token' : token
+    });
 })
 
 
-module.exports = router;
+module.exports = router;    
