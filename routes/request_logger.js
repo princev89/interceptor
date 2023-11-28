@@ -6,7 +6,7 @@ const axios = require('axios');
 
 
 
-router.all('/:domain', async (req, res) => {
+router.all('/:domain_id/:client_id', async (req, res) => {
     const params = req.params;
     const queryParam = req.query;
     const files = req.files;
@@ -16,11 +16,13 @@ router.all('/:domain', async (req, res) => {
 
     // const url = map.get(params.domain);
     let url;
-    await Domain.findOne({ "_id": new ObjectId(params.domain) }).then((response) => {
+    await Domain.findOne({ "_id": new ObjectId(params.domain_id) }).then((response) => {
         console.log("response", response);
         url = response.domain;
     });
     console.log("url is ", url);
+
+
     const hostname = url.split('//')[1].replaceAll('/', '');
 
     const passHeader = { ...req.headers, 'host': hostname }
@@ -45,7 +47,6 @@ router.all('/:domain', async (req, res) => {
     logData['requestHeaders'] = headers;
     logData['requestBody'] = body;
     logData['requestTime'] = new Date().getTime();
-    const clientId = `${params.domain}`;
 
 
     if (method == 'POST') {
@@ -53,7 +54,8 @@ router.all('/:domain', async (req, res) => {
             .then(async response => {
                 try {
                     const log = new RequestLogger({
-                        client: clientId,
+                        client: params.client_id,
+                        domain_id: params.domain_id,
                         data: logData
                     });
                     await log.save();
@@ -71,7 +73,8 @@ router.all('/:domain', async (req, res) => {
             .then(async response => {
                 try {
                     const log = new RequestLogger({
-                        client: clientId,
+                        client: params.client_id,
+                        domain_id: params.domain_id,
                         data: logData
                     });
                     await log.save();
@@ -83,11 +86,12 @@ router.all('/:domain', async (req, res) => {
             .catch(error => {
                 res.json({
                     'status': 1,
-                    'msg': 'something went wrong'
+                    'msg': error
                 })
             });
 
     }
 });
+
 
 module.exports = router;

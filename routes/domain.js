@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const Domain = require('../model/Domain');
 
-
+//register domain
 router.post('/', async (req, res) => {
 
   const clientId = req.client._id;
