@@ -53,6 +53,7 @@ router.all('/:domain_id/:client_id', async (req, res) => {
         axios.post(fetchUrl, body, { headers })
             .then(async response => {
                 try {
+                    logData['response'] = response.data;
                     const log = new RequestLogger({
                         client: params.client_id,
                         domain_id: params.domain_id,
@@ -72,6 +73,7 @@ router.all('/:domain_id/:client_id', async (req, res) => {
         axios.get(fetchUrl, { headers })
             .then(async response => {
                 try {
+                    logData['response'] = response.data;
                     const log = new RequestLogger({
                         client: params.client_id,
                         domain_id: params.domain_id,
