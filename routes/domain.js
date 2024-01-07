@@ -26,7 +26,10 @@ router.post('/', async (req, res) => {
 router.get('/list', async (req, res) => {
   const clientId = req.client._id;
   const domains = await Domain.find({ client: clientId });
-  return res.send(domains);
+  return res.json({
+    'status' : 0,
+    'data' : domains
+  });
 })
 
 module.exports = router;
