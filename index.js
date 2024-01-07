@@ -10,7 +10,7 @@ const domainRoute = require('./routes/domain')
 const requestLoggerRoute = require('./routes/request_logger')
 const clientLog = require('./routes/client_log')
 const authenticateJWT = require('./middleware/middleware')
-
+const cors = require('cors');
 dotenv.config();
 
 
@@ -23,6 +23,11 @@ app.use(upload.any());
 const PORT = 3000 || process.env.PORT;
 app.use(express.static('public'));
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 (async () => {
     console.log("Connecting to database...");
